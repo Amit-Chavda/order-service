@@ -1,0 +1,43 @@
+server:
+  port: '5003'
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: 'true'
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+    fetch-registry: 'true'
+
+spring:
+  application:
+    name: Order-Service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/order-service-db
+    username: postgres
+    password: Simform@123
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show-sql: false
+    hibernate:
+      ddl-auto: update
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+resilience4j:
+  retry:
+    instances:
+      retryPlaceOrder:
+        maxRetryAttempts: 5
+        waitDuration: 2s
+      retryGetOrders:
+        maxRetryAttempts: 3
+        waitDuration: 1s
